@@ -10,7 +10,7 @@ public class CheckedExceptionHandling {
 	public static void main(String[] args) {
 		
 		List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
-		integers.forEach(throwingConsumerWrapper(i -> writeToFile(i)));
+		integers.forEach(throwingConsumerWrapper(i -> writeToFile(i), IOException.class));
 
 	}
 
@@ -24,7 +24,7 @@ public class CheckedExceptionHandling {
 	    // logic to write to file which throws IOException
 	}
 
-	static <T> Consumer<T> throwingConsumerWrapper(ThrowingConsumer<T, Exception> throwingConsumer) 
+	static <T, E extends Exception> Consumer<T> throwingConsumerWrapper(ThrowingConsumer<T, Exception> throwingConsumer, Class<E> exception) 
 	{
 		return i -> 
 		{
@@ -32,12 +32,20 @@ public class CheckedExceptionHandling {
 	        {
 	            throwingConsumer.accept(i);
 	        } 
-	        catch (Exception ex) 
+	        catch (Exception e) 
 	        {
-	            throw new RuntimeException(ex);
+	        	try
+	        	{
+					E exCast = exception.cast(e);
+					System.err.println("Exception Occured: " + exCast.toString());
+	        	}
+	        	catch(ClassCastException ccE)
+	        	{
+	        		//throw new RuntimeException(e);
+					System.err.println("Exception Occured: " + ccE.toString());
+	        	}
 	        }
 	    };
 	}
 
-	
 }

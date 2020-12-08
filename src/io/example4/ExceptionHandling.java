@@ -60,6 +60,7 @@ public class ExceptionHandling {
 				}
 				catch(ClassCastException ccE)
 				{
+					//throw e;
 					System.err.println("Exception Occured: " + ccE.toString());
 				}
 			}
