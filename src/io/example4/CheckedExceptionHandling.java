@@ -10,7 +10,9 @@ public class CheckedExceptionHandling {
 	public static void main(String[] args) {
 		
 		List<Integer> integers = Arrays.asList(3, 9, 7, 0, 10, 20);
-		integers.forEach(throwingConsumerWrapper(i -> writeToFile(i), IOException.class));
+		integers.forEach(throwingConsumerWrapper(CheckedExceptionHandling::writeToFile, IOException.class));
+		//Using Method reference
+		//CheckedExceptionHandling::writeToFile == i -> writeToFile(i) 
 
 	}
 
@@ -22,6 +24,7 @@ public class CheckedExceptionHandling {
 	
 	static void writeToFile(Integer integer) throws IOException {
 	    // logic to write to file which throws IOException
+		System.out.println(integer);
 	}
 
 	static <T, E extends Exception> Consumer<T> throwingConsumerWrapper(ThrowingConsumer<T, Exception> throwingConsumer, Class<E> exception) 

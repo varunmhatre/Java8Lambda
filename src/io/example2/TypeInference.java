@@ -6,10 +6,11 @@ public class TypeInference {
 		
 		//StringLength myLambda = s -> System.out.print(s);
 		
-		greet(s -> System.out.print(s),"Hi you");
+		//Using Method reference
+		greet("Hi you", System.out::print); // System.out::print == s -> System.out.print(s)
 	}
 
-	public static void greet(StringLength greeting, String s)
+	public static void greet(String s,StringLength greeting)
 	{
 		greeting.print(s);
 	}
